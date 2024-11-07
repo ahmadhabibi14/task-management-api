@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  mariadb:
+    image: mariadb
+    container_name: taskmgment-db
+    environment:
+      MARIADB_DATABASE: "${MARIADB_DATABASE}"
+      MARIADB_USER: "${MARIADB_USER}"
+      MARIADB_PASSWORD: "${MARIADB_PASSWORD}"
+      MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD}"
+      MARIADB_TZ: "Asia/Makassar"
+    command: "--default-time-zone=+08:00"
+    ports:
+      - 3306:3306
+    volumes:
+      - ./docker/mariadb:/var/lib/mysql
+    restart: on-failure
