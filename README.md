@@ -49,4 +49,4 @@ pnpm build
 pnpm start
 ```
 
-The API Docs (Swagger) is available at path `/docs`
+The API Docs (Swagger) is available at path `/docs`, so I don't have to document it here
