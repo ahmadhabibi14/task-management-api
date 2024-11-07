@@ -11,8 +11,10 @@ dbmate new <migration-name>
 dbmate up
 dbmate down
 
-# Dump
+# Dump schema
 dbmate dump
+# or
+make db-dump
 
 # Restore
 dbmate load

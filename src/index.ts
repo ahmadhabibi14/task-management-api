@@ -62,6 +62,7 @@ app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/tasks", routes.RouteNewTask);
+app.use("/tasks", routes.RouteUpdateTaskById);
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

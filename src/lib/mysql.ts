@@ -11,7 +11,8 @@ export function mysqlConnect(): Promise<Connection> {
         host: "127.0.0.1",
         user: process.env.MARIADB_USER,
         password: process.env.MARIADB_PASSWORD,
-        database: process.env.MARIADB_DATABASE
+        database: process.env.MARIADB_DATABASE,
+        multipleStatements: true
       });
 
       MySQLConnection.connect((err) => {

@@ -1,5 +1,7 @@
-import RouteNewTask from "./newTask"
+import RouteNewTask from "./newTask";
+import RouteUpdateTaskById from "./updateTaskById";
 
 export default {
-  RouteNewTask
+  RouteNewTask, 
+  RouteUpdateTaskById
 };
