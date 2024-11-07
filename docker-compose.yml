@@ -16,3 +16,8 @@ services:
     volumes:
       - ./docker/mariadb:/var/lib/mysql
     restart: on-failure
+    networks:
+      - taskmgment-network
+
+networks:
+  taskmgment-network:
