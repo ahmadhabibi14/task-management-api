@@ -36,12 +36,26 @@ const port = process.env.WEB_PORT;
  *        status:
  *          type: string
  *          description: The status of the task
+ *        createdAt:
+ *          type: string
+ *          format: date-time
+ *          description: The date and time when the task was created
+ *        updatedAt:
+ *          type: string
+ *          format: date-time
+ *          description: The date and time when the task was last updated
+ *        isDeleted:
+ *          type: boolean
+ *          description: Whether the task is deleted
  *      example:
  *        id: 1
  *        title: Task 1
  *        description: This is task 1
  *        dueDate: 2024-12-28
  *        status: pending
+ *        createdAt: 2024-11-07T12:28:10.000Z
+ *        updatedAt: 2024-11-07T12:28:10.000Z"
+ *        isDeleted: false
  */
 const swaggerOptions: Options = {
   swaggerDefinition: {
@@ -63,6 +77,9 @@ app.use(bodyParser.json())
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/tasks", routes.RouteNewTask);
 app.use("/tasks", routes.RouteUpdateTaskById);
+app.use("/tasks", routes.RouteFindTaskById);
+app.use("/tasks", routes.RouteFindTasks);
+app.use("/tasks", routes.RouteDeleteTaskById);
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

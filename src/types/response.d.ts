@@ -8,3 +8,19 @@ export interface ResponseHTTP {
 export interface ResponseNewTask extends ResponseHTTP {
   task: Task
 }
+
+export interface ResponseUpdateTaskById extends ResponseHTTP {
+  task: Task
+}
+
+export interface ResponseFindTaskById extends ResponseHTTP {
+  task: Task
+}
+
+export interface ResponseFindTasks extends ResponseHTTP {
+  tasks: Task[]
+}
+
+export interface ResponseDeleteTaskById extends ResponseHTTP {
+  task: Task
+}

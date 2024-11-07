@@ -6,4 +6,5 @@ export type Task = {
   status: string;
   createdAt: Date | string;
   updatedAt: Date | string;
+  isDeleted: boolean;
 };

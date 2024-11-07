@@ -34,7 +34,7 @@ const router = Router();
  *                description: Task status (pending, in-progress, completed, etc..)
  *    responses:
  *      200:
- *        description: Successful response
+ *        description: The created task object with a unique identifier.
  *        content:
  *          application/json:
  *            schema:

@@ -2,7 +2,7 @@ import { Router, type Request, type Response } from "express";
 import { type Task } from "../types/task";
 import { UpdateTaskById } from "../models/tasks";
 import { body, param, Result, type ValidationError, validationResult, type ValidationChain } from "express-validator";
-import type { ResponseHTTP, ResponseNewTask } from "../types/response";
+import type { ResponseHTTP, ResponseUpdateTaskById } from "../types/response";
 import { ResponseJSONFunc } from "../lib/http";
 
 const router = Router();
@@ -11,7 +11,7 @@ const router = Router();
  * @swagger
  * /tasks/{id}:
  *  put:
- *    summary: Update task by ID
+ *    summary: Update a specific task's details.
  *    tags: [Tasks]
  *    parameters:
  *      - in: path
@@ -53,7 +53,7 @@ const router = Router();
  */
 
 const validators: ValidationChain[] = [
-  param("id").isNumeric().withMessage("id must be a number"),
+  param("id").isNumeric().withMessage("id must be a number").notEmpty().withMessage("id is required"),
   body("title").notEmpty().withMessage("title is required"),
   body("description").notEmpty().withMessage("description is required"),
   body("dueDate")
@@ -92,7 +92,7 @@ router.put("/:id", validators, async (req: Request, res: Response) => {
     return;
   }
 
-  ResponseJSONFunc<ResponseNewTask>(res, {
+  ResponseJSONFunc<ResponseUpdateTaskById>(res, {
     success: true,
     errors: null,
     task: taskOut
