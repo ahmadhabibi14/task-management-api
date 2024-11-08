@@ -1,4 +1,4 @@
-import { type Connection, createConnection } from "mysql2";
+import { type Connection, createConnection, QueryError } from "mysql2";
 
 export let MySQLConnection: Connection;
 
@@ -27,11 +27,13 @@ export function mysqlConnect(): Promise<Connection> {
   });
 }
 
-export function mysqlDisconnect(): void {
-  console.log("Disconnected from MySQL!");
-  MySQLConnection.end();
+export function mysqlDisconnect(callback: (err: QueryError | null) => void): void {
+  MySQLConnection.end(callback);
 }
 
 export function mysqlInit(): void {
-  mysqlConnect();
+  mysqlConnect().catch((err) => {
+    console.log(err);
+    process.exit(1);
+  });
 }

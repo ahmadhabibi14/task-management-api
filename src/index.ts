@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc, { Options } from "swagger-jsdoc";
 import routes from "./controller";
-import { mysqlInit } from "./lib/mysql";
+import { mysqlInit, mysqlDisconnect } from "./lib/mysql";
+import { Server } from "http";
+import { debug } from "console";
 
 dotenv.config();
 
@@ -81,6 +83,29 @@ app.use("/tasks", routes.RouteFindTaskById);
 app.use("/tasks", routes.RouteFindTasks);
 app.use("/tasks", routes.RouteDeleteTaskById);
 
-app.listen(port, () => {
+const server: Server = app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-})
+});
+
+function shutdown() {
+  console.log("Shutting down...");
+
+  mysqlDisconnect((err) => {
+    if (err) {
+      console.error("Error disconnecting from MySQL:", err);
+      process.exit(1);
+    }
+  });
+
+  server.close((err) => {
+    if (err) {
+      console.error("Error shutting down HTTP server:", err);
+      process.exit(1);
+    }
+  });
+
+  process.exit(0);
+}
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);
