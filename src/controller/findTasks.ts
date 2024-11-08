@@ -40,13 +40,13 @@ const router = Router();
 
 const validators: ValidationChain[] = [
   query("status").optional().isString(),
-  query("dueDate").optional()
+  query("dueDate")
     .matches(/^\d{4}-\d{2}-\d{2}$/).withMessage("dueDate must be in YYYY-MM-DD format")
     .custom((value) => {
       const date = new Date(value);
       return !isNaN(date.getTime());
-    })
-    .withMessage("dueDate must be a valid date"),
+    }).withMessage("dueDate must be a valid date")
+    .optional(),
 ]
 
 router.get("/", validators, async (req: Request, res: Response) => {

@@ -129,19 +129,28 @@ export function FindTaskById(id: number): Promise<Task | null> {
 
 export function FindTasks(status: string, dueDate: string): Promise<Task[]> {
   return new Promise<Task[]>((resolve, reject) => {
-    if (!status || status === "") {
-      status = "pending"; // default to pending
+    let whereAnd: string = ``
+
+    if (status !== "" && typeof status === "string") {
+      whereAnd += `WHERE status = ?`;
     }
 
-    if (!dueDate || dueDate === "") {
-      const today: Date = new Date();
-      dueDate = today.toISOString().split('T')[0]; // default to today
+    if (dueDate !== "" && typeof dueDate === "string") {
+      const dt: Date = new Date(dueDate);
+      if (!isNaN(dt.getTime())) {
+        if (whereAnd !== ``) {
+          whereAnd += ` AND due_date = ?`;
+        } else {
+          whereAnd += `WHERE due_date = ?`;
+        }
+      } else {
+        const today: Date = new Date();
+        dueDate = today.toISOString().split('T')[0];
+      }
     }
     const query: string = `-- FindTasks
       SELECT id, title, description, due_date, status, created_at, updated_at, is_deleted
-      FROM tasks
-      WHERE status = ? AND due_date = ?
-    `
+      FROM tasks ${whereAnd}`
     console.log(query);
     MySQLConnection.query(query, [status, dueDate], (err: QueryError | null, result: any) => {
       if (err) {
