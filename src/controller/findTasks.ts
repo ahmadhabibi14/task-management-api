@@ -13,6 +13,17 @@ const router = Router();
  *  get:
  *    summary: Retrieve a list of all tasks
  *    tags: [Tasks]
+ *    parameters:
+ *      - in: query
+ *        name: status
+ *        schema:
+ *          type: string
+ *        description: Task status
+ *      - in: query
+ *        name: dueDate
+ *        schema:
+ *          type: string
+ *        description: Due date in YYYY-MM-DD format
  *    responses:
  *      200:
  *        description: An array of tasks matching the filters, if provided
