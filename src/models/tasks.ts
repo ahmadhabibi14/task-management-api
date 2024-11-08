@@ -101,6 +101,7 @@ export function FindTaskById(id: number): Promise<Task | null> {
       FROM tasks
       WHERE id = ?
     `
+    console.log(query);
     MySQLConnection.query(query, [id], (err: QueryError | null, result: any) => {
       if (err) {
         reject(err);
@@ -141,6 +142,7 @@ export function FindTasks(status: string, dueDate: string): Promise<Task[]> {
       FROM tasks
       WHERE status = ? AND due_date = ?
     `
+    console.log(query);
     MySQLConnection.query(query, [status, dueDate], (err: QueryError | null, result: any) => {
       if (err) {
         reject(err);

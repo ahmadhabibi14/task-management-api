@@ -53,17 +53,17 @@ const router = Router();
  */
 
 const validators: ValidationChain[] = [
-  param("id").isNumeric().withMessage("id must be a number").notEmpty().withMessage("id is required"),
-  body("title").notEmpty().withMessage("title is required"),
-  body("description").notEmpty().withMessage("description is required"),
-  body("dueDate")
+  param("id").isNumeric().withMessage("id must be a number").optional(),
+  body("title").isString().withMessage("title must be a string").optional(),
+  body("description").isString().withMessage("description must be a string").optional(),
+  body("dueDate").optional()
     .matches(/^\d{4}-\d{2}-\d{2}$/).withMessage("dueDate must be in YYYY-MM-DD format")
     .custom((value) => {
       const date = new Date(value);
       return !isNaN(date.getTime());
     })
     .withMessage("dueDate must be a valid date"),
-  body("status").notEmpty().withMessage("status is required")
+  body("status").isString().withMessage("status must be a string").optional()
 ]
 
 router.put("/:id", validators, async (req: Request, res: Response) => {

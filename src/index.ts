@@ -6,12 +6,18 @@ import swaggerJsdoc, { Options } from "swagger-jsdoc";
 import routes from "./controller";
 import { mysqlInit, mysqlDisconnect } from "./lib/mysql";
 import { Server } from "http";
-import { debug } from "console";
+import { QueryError } from "mysql2";
 
 dotenv.config();
 
-// Connect to the database (MySQL)
-mysqlInit();
+mysqlInit((err: QueryError | null) => {
+  if (err) {
+    console.error("Error connecting to MySQL:", err);
+    process.exit(1);
+  }
+
+  console.log("📦 [database]: connected to MySQL");
+});
 
 const app: Express = express();
 const port = process.env.WEB_PORT;
@@ -74,7 +80,7 @@ const swaggerOptions: Options = {
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
-app.use(bodyParser.urlencoded())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/tasks", routes.RouteNewTask);
@@ -84,11 +90,11 @@ app.use("/tasks", routes.RouteFindTasks);
 app.use("/tasks", routes.RouteDeleteTaskById);
 
 const server: Server = app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+  console.log(`⚡️ [server]: Server is running at http://localhost:${port}`);
 });
 
 function shutdown() {
-  console.log("Shutting down...");
+  console.log("🔌 [server]: Shutting down ...");
 
   mysqlDisconnect((err) => {
     if (err) {
